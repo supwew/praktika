@@ -57,7 +57,7 @@ class Program
             Console.Write("Выбор: ");
             string choice = Console.ReadLine() ?? "";
 
-            // Замена if-else на switch
+       
             switch (choice)
             {
                 case "1":
