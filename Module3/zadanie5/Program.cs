@@ -97,7 +97,6 @@ class Program
             // Переменная для хранения выбранного делегата
             SortMethod sort;
 
-            // Замена условий if-else на switch
             switch (choice)
             {
                 case "0":
