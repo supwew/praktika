@@ -94,25 +94,26 @@ class Program
             Console.Write("Выбор: ");
             string choice = Console.ReadLine() ?? "";
 
-            if (choice == "0")
-            {
-                break;
-            }
-
-            // Выбор метода сортировки (делегата)
+            // Переменная для хранения выбранного делегата
             SortMethod sort;
-            if (choice == "1")
+
+            // Замена условий if-else на switch
+            switch (choice)
             {
-                sort = BubbleSort;
-            }
-            else if (choice == "2")
-            {
-                sort = QuickSort;
-            }
-            else
-            {
-                Console.WriteLine("Нет такого пункта меню.");
-                continue;
+                case "0":
+                    return; // Полный выход из программы (завершение метода Main)
+
+                case "1":
+                    sort = BubbleSort;
+                    break;
+
+                case "2":
+                    sort = QuickSort;
+                    break;
+
+                default:
+                    Console.WriteLine("Нет такого пункта меню.");
+                    continue; // Пропуск текущей итерации цикла while и возврат к началу меню
             }
 
             // Сортировка копии массива и вывод результата

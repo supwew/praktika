@@ -52,72 +52,78 @@ class Program
             Console.Write("Выбор: ");
             string choice = Console.ReadLine() ?? "";
 
-            if (choice == "1")
+            // Замена главного if-else на switch
+            switch (choice)
             {
-                // Ввод названия задачи
-                Console.Write("Название задачи: ");
-                string title = Console.ReadLine() ?? "";
+                case "1":
+                    // Ввод названия задачи
+                    Console.Write("Название задачи: ");
+                    string title = Console.ReadLine() ?? "";
 
-                // Выбор делегата для задачи
-                Console.WriteLine("Действие: 1 - уведомление, 2 - запись в журнал");
-                Console.Write("Выбор: ");
-                string action = Console.ReadLine() ?? "";
-                while (action != "1" && action != "2")
-                {
-                    Console.Write("Нужно 1 или 2. Повторите ввод: ");
-                    action = Console.ReadLine() ?? "";
-                }
+                    // Выбор делегата для задачи
+                    Console.WriteLine("Действие: 1 - уведомление, 2 - запись в журнал");
+                    Console.Write("Выбор: ");
+                    string action = Console.ReadLine() ?? "";
+                    while (action != "1" && action != "2")
+                    {
+                        Console.Write("Нужно 1 или 2. Повторите ввод: ");
+                        action = Console.ReadLine() ?? "";
+                    }
 
-                if (action == "1")
-                {
-                    tasks.Add(new TaskItem(title, "уведомление", Notify));
-                }
-                else
-                {
-                    tasks.Add(new TaskItem(title, "запись в журнал", WriteToJournal));
-                }
-            }
-            else if (choice == "2")
-            {
-                // Вывод списка задач
-                if (tasks.Count == 0)
-                {
-                    Console.WriteLine("Задач нет.");
-                }
-                for (int i = 0; i < tasks.Count; i++)
-                {
-                    Console.WriteLine((i + 1) + ". " + tasks[i].Title + " (" + tasks[i].ActionName + ")");
-                }
-            }
-            else if (choice == "3")
-            {
-                // Вызов делегата каждой задачи
-                if (tasks.Count == 0)
-                {
-                    Console.WriteLine("Задач нет.");
-                }
-                foreach (TaskItem task in tasks)
-                {
-                    task.Action(task.Title);
-                }
-            }
-            else if (choice == "4")
-            {
-                // Вывод журнала
-                if (journal.Count == 0)
-                {
-                    Console.WriteLine("Журнал пуст.");
-                }
-                foreach (string line in journal)
-                {
-                    Console.WriteLine(line);
-                }
-            }
-            else if (choice == "0")
-            {
-                break;
-            } else {
-                Console.WriteLine("Нет такого пункта меню.");
+                    // Замена выбора действия на switch
+                    switch (action)
+                    {
+                        case "1":
+                            tasks.Add(new TaskItem(title, "уведомление", Notify));
+                            break;
+                        case "2":
+                            tasks.Add(new TaskItem(title, "запись в журнал", WriteToJournal));
+                            break;
+                    }
+                    break;
+
+                case "2":
+                    // Вывод списка задач
+                    if (tasks.Count == 0)
+                    {
+                        Console.WriteLine("Задач нет.");
+                    }
+                    for (int i = 0; i < tasks.Count; i++)
+                    {
+                        Console.WriteLine((i + 1) + ". " + tasks[i].Title + " (" + tasks[i].ActionName + ")");
+                    }
+                    break;
+
+                case "3":
+                    // Вызов делегата каждой задачи
+                    if (tasks.Count == 0)
+                    {
+                        Console.WriteLine("Задач нет.");
+                    }
+                    foreach (TaskItem task in tasks)
+                    {
+                        task.Action(task.Title);
+                    }
+                    break;
+
+                case "4":
+                    // Вывод журнала
+                    if (journal.Count == 0)
+                    {
+                        Console.WriteLine("Журнал пуст.");
+                    }
+                    foreach (string line in journal)
+                    {
+                        Console.WriteLine(line);
+                    }
+                    break;
+
+                case "0":
+                    return; // Полный выход из Main вместо break, так как break теперь относится к switch
+
+                default:
+                    Console.WriteLine("Нет такого пункта меню.");
+                    break;
             }
         }
     }

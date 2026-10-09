@@ -57,40 +57,42 @@ class Program
             Console.Write("Выбор: ");
             string choice = Console.ReadLine() ?? "";
 
-            if (choice == "1")
+            // Замена if-else на switch
+            switch (choice)
             {
-                // Ввод даты с проверкой
-                Console.Write("Показать записи начиная с даты (дд.мм.гггг): ");
-                DateTime from;
-                while (!DateTime.TryParse(Console.ReadLine(), out from))
-                {
-                    Console.Write("Нужна дата в формате дд.мм.гггг. Повторите ввод: ");
-                }
+                case "1":
+                    // Ввод даты с проверкой
+                    Console.Write("Показать записи начиная с даты (дд.мм.гггг): ");
+                    DateTime from;
+                    while (!DateTime.TryParse(Console.ReadLine(), out from))
+                    {
+                        Console.Write("Нужна дата в формате дд.мм.гггг. Повторите ввод: ");
+                    }
 
-                // Фильтр по дате
-                Show(list, r => r.Date >= from);
-            }
-            else if (choice == "2")
-            {
-                // Ввод ключевого слова
-                Console.Write("Ключевое слово: ");
-                string word = (Console.ReadLine() ?? "").ToLower();
+                    // Фильтр по дате
+                    Show(list, r => r.Date >= from);
+                    break;
 
-                // Фильтр по ключевому слову
-                Show(list, r => r.Text.ToLower().Contains(word));
-            }
-            else if (choice == "3")
-            {
-                // Фильтр, пропускающий все записи
-                Show(list, r => true);
-            }
-            else if (choice == "0")
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Нет такого пункта меню.");
+                case "2":
+                    // Ввод ключевого слова
+                    Console.Write("Ключевое слово: ");
+                    string word = (Console.ReadLine() ?? "").ToLower();
+
+                    // Фильтр по ключевому слову
+                    Show(list, r => r.Text.ToLower().Contains(word));
+                    break;
+
+                case "3":
+                    // Фильтр, пропускающий все записи
+                    Show(list, r => true);
+                    break;
+
+                case "0":
+                    return; // Завершаем метод Main для выхода из программы
+
+                default:
+                    Console.WriteLine("Нет такого пункта меню.");
+                    break;
             }
         }
     }
