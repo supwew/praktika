@@ -101,15 +101,12 @@ class Program
             {
                 case "0":
                     return; // Полный выход из программы (завершение метода Main)
-
                 case "1":
                     sort = BubbleSort;
                     break;
-
                 case "2":
                     sort = QuickSort;
                     break;
-
                 default:
                     Console.WriteLine("Нет такого пункта меню.");
                     continue; // Пропуск текущей итерации цикла while и возврат к началу меню
