@@ -5,7 +5,6 @@ namespace zadanie5
 {
     public partial class Form1 : Form
     {
-        // Логика калькулятора находится в классе Calculator
         Calculator calculator = new Calculator();
 
         public Form1()
