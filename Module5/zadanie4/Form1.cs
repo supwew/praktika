@@ -6,11 +6,24 @@ namespace zadanie4
 {
     public partial class Form1 : Form
     {
-        double zoom = 1.0;   // Масштаб: 1 = 100%
+        // Логика масштабирования находится в классе ImageZoom
+        ImageZoom zoom = new ImageZoom();
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        // Применение масштаба к изображению
+        void ApplyZoom()
+        {
+            if (pictureBox1.Image == null)
+            {
+                return;
+            }
+
+            pictureBox1.Size = zoom.GetSize(pictureBox1.Image.Size);
+            zoomLabel.Text = zoom.GetText();
         }
 
         // Выбор и открытие изображения
@@ -26,7 +39,8 @@ namespace zadanie4
                 Image image = Image.FromFile(openFileDialog1.FileName);
                 pictureBox1.Image?.Dispose();
                 pictureBox1.Image = image;
-                SetZoom(1.0);
+                zoom.Reset();
+                ApplyZoom();
             }
             catch (Exception)
             {
@@ -34,18 +48,21 @@ namespace zadanie4
             }
         }
 
-        // Увеличение и уменьшение масштаба
+        // Увеличение масштаба
         private void zoomInButton_Click(object sender, EventArgs e)
         {
-            SetZoom(zoom * 1.25);
+            zoom.ZoomIn();
+            ApplyZoom();
         }
 
+        // Уменьшение масштаба
         private void zoomOutButton_Click(object sender, EventArgs e)
         {
-            SetZoom(zoom / 1.25);
+            zoom.ZoomOut();
+            ApplyZoom();
         }
 
-        // Масштаб, при котором изображение целиком помещается в окно
+        // Масштаб по размеру окна
         private void fitButton_Click(object sender, EventArgs e)
         {
             if (pictureBox1.Image == null)
@@ -53,22 +70,8 @@ namespace zadanie4
                 return;
             }
 
-            double byWidth = (double)scrollPanel.ClientSize.Width / pictureBox1.Image.Width;
-            double byHeight = (double)scrollPanel.ClientSize.Height / pictureBox1.Image.Height;
-            SetZoom(Math.Min(byWidth, byHeight));
-        }
-
-        // Установка масштаба (от 10% до 1000%)
-        void SetZoom(double value)
-        {
-            if (pictureBox1.Image == null)
-            {
-                return;
-            }
-
-            zoom = Math.Max(0.1, Math.Min(10, value));
-            pictureBox1.Size = new Size((int)(pictureBox1.Image.Width * zoom), (int)(pictureBox1.Image.Height * zoom));
-            zoomLabel.Text = (int)(zoom * 100) + "%";
+            zoom.Fit(pictureBox1.Image.Size, scrollPanel.ClientSize);
+            ApplyZoom();
         }
 
         private void zoomLabel_Click(object sender, EventArgs e)

@@ -1,12 +1,12 @@
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace zadanie2
 {
     public partial class Form1 : Form
     {
-        string? currentFile = null;   // Путь к открытому файлу
+        // Логика работы с файлом находится в классе TextEditor
+        TextEditor editor = new TextEditor();
 
         public Form1()
         {
@@ -23,10 +23,9 @@ namespace zadanie2
 
             try
             {
-                textBox1.Text = File.ReadAllText(openFileDialog1.FileName);
+                textBox1.Text = editor.Open(openFileDialog1.FileName);
                 textBox1.Select(0, 0);
-                currentFile = openFileDialog1.FileName;
-                Text = "Текстовый редактор - " + Path.GetFileName(currentFile);
+                Text = "Текстовый редактор - " + editor.FileName;
             }
             catch (Exception ex)
             {
@@ -55,7 +54,7 @@ namespace zadanie2
         // Сохранение файла (saveAs = true: всегда с выбором имени)
         void SaveFile(bool saveAs)
         {
-            string? path = currentFile;
+            string? path = editor.CurrentFile;
 
             if (path == null || saveAs)
             {
@@ -68,9 +67,8 @@ namespace zadanie2
 
             try
             {
-                File.WriteAllText(path, textBox1.Text);
-                currentFile = path;
-                Text = "Текстовый редактор - " + Path.GetFileName(path);
+                editor.Save(path, textBox1.Text);
+                Text = "Текстовый редактор - " + editor.FileName;
             }
             catch (Exception ex)
             {

@@ -5,23 +5,39 @@ namespace zadanie3
 {
     public partial class Form1 : Form
     {
+        // Логика учета задач находится в классе TaskManager
+        TaskManager manager = new TaskManager();
+
+        bool updating = false;   // Идет заполнение списка (галочки пока не обрабатываются)
+
         public Form1()
         {
             InitializeComponent();
+            ShowTasks();
+        }
+
+        // Вывод задач из менеджера в список
+        void ShowTasks()
+        {
+            updating = true;
+            tasksCheckedListBox.Items.Clear();
+            foreach (TaskItem task in manager.Tasks)
+            {
+                tasksCheckedListBox.Items.Add(task.Title, task.Done);
+            }
+            updating = false;
+
+            counterLabel.Text = manager.Counter();
         }
 
         // Добавление задачи
         private void addButton_Click(object sender, EventArgs e)
         {
-            string text = taskTextBox.Text.Trim();
-            if (text == "")
+            if (manager.Add(taskTextBox.Text))
             {
-                return;
+                taskTextBox.Clear();
+                ShowTasks();
             }
-
-            tasksCheckedListBox.Items.Add(text);
-            taskTextBox.Clear();
-            UpdateCounter();
         }
 
         // Удаление выбранной задачи
@@ -33,20 +49,20 @@ namespace zadanie3
                 return;
             }
 
-            tasksCheckedListBox.Items.RemoveAt(tasksCheckedListBox.SelectedIndex);
-            UpdateCounter();
+            manager.Delete(tasksCheckedListBox.SelectedIndex);
+            ShowTasks();
         }
 
-        // Изменение галочки: счетчик обновляется после изменения
+        // Изменение галочки: задача отмечается выполненной или нет
         private void tasksCheckedListBox_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            BeginInvoke(new Action(UpdateCounter));
-        }
+            if (updating)
+            {
+                return;
+            }
 
-        // Счетчик выполненных задач
-        void UpdateCounter()
-        {
-            counterLabel.Text = "Выполнено: " + tasksCheckedListBox.CheckedItems.Count + " из " + tasksCheckedListBox.Items.Count;
+            manager.SetDone(e.Index, e.NewValue == CheckState.Checked);
+            counterLabel.Text = manager.Counter();
         }
     }
 }
