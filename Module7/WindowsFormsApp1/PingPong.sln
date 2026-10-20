@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37027.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingPong", "PingPong.csproj", "{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Debug|x86.ActiveCfg = Debug|x86
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Debug|x86.Build.0 = Debug|x86
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Release|x86.ActiveCfg = Release|x86
+		{0E21827D-0219-4CAF-9D88-5ED18DEEA18D}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92633490-D028-4CFA-8542-FDC154201EF1}
+	EndGlobalSection
+EndGlobal
