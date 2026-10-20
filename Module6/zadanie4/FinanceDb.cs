@@ -49,7 +49,7 @@ namespace zadanie4
             DataTable table = Run("SELECT IFNULL(SUM(Amount), 0) AS Total FROM Records WHERE Type = @p0", type);
             return Convert.ToDouble(table.Rows[0]["Total"]);
         }
-
+        
         // Добавление записи
         public void Add(string type, string category, double amount, string date)
         {
