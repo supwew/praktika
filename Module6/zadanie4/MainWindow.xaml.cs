@@ -17,16 +17,16 @@ namespace zadanie4
             Load();
         }
 
-        // Вывод записей в таблицу и итогов
+         //Вывод записей в таблицу и итогов
         void Load()
         {
             grid.ItemsSource = db.GetAll().DefaultView;
-
+        
             double income = db.Sum("Доход");
             double expense = db.Sum("Расход");
             summaryText.Text = "Доходы: " + income + "   Расходы: " + expense + "   Баланс: " + (income - expense);
         }
-
+       
         // Номер выбранной записи, -1 если ничего не выбрано
         int SelectedId()
         {
