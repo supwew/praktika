@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Contacts
 {
-    // Интерфейс хранилища контактов (способ хранения можно заменить)
+    // Интерфейс хранилища контактов
     public interface IContactStorage
     {
         List<Contact> Load();
