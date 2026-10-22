@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Contacts
 {
-    // Базовый абстрактный класс контакта
     public abstract class Contact
     {
-        string name = "";   // Закрытое поле
+        string name = "";
+        string phone = "";
+        string email = "";
+        bool isFavorite = false;
 
-        // Имя: пустое значение не допускается
         public string Name
         {
             get { return name; }
@@ -21,48 +23,83 @@ namespace Contacts
             }
         }
 
-        public string Phone { get; set; }
-        public string Email { get; set; }
+        // Проверка телефона: разрешены цифры, плюсы, скобки, дефисы и пробелы. Буквы запрещены!
+        public string Phone
+        {
+            get { return phone; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentException("Телефон не может быть пустым.");
+                }
+                string trimmed = value.Trim();
+                if (!Regex.IsMatch(trimmed, @"^[0-9\+\-\(\)\s]+$"))
+                {
+                    throw new ArgumentException("Номер телефона может содержать только цифры, знаки +, -, скобки и пробелы.");
+                }
+                phone = trimmed;
+            }
+        }
 
-        // Тип контакта и дополнительные данные (у каждого вида свои)
+        // Проверка email на корректность
+        public string Email
+        {
+            get { return email; }
+            set
+            {
+                string trimmed = value.Trim();
+                if (!string.IsNullOrEmpty(trimmed))
+                {
+                    if (!Regex.IsMatch(trimmed, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        throw new ArgumentException("У введенного email некорректный формат.");
+                    }
+                }
+                email = trimmed;
+            }
+        }
+
+        public bool IsFavorite
+        {
+            get { return isFavorite; }
+            set { isFavorite = value; }
+        }
+
         public abstract string Type { get; }
         public abstract string Details { get; set; }
 
-        protected Contact(string name, string phone, string email)
+        protected Contact(string name, string phone, string email, bool isFavorite = false)
         {
             Name = name;
-            Phone = phone.Trim();
-            Email = email.Trim();
+            Phone = phone;
+            Email = email;
+            IsFavorite = isFavorite;
         }
 
-        // Краткая информация о контакте (наследники дополняют ее)
         public virtual string GetInfo()
         {
-            return Name + ", тел.: " + Phone + ", email: " + Email;
+            string favStr = IsFavorite ? "⭐ [Избранное]" : "";
+            return Name + " " + favStr + ", тел.: " + Phone + ", email: " + (string.IsNullOrEmpty(Email) ? "нет" : Email);
         }
     }
 
-    // Личный контакт (наследник)
     public class PersonalContact : Contact
     {
         string note;
 
-        public PersonalContact(string name, string phone, string email, string note)
-            : base(name, phone, email)
+        public PersonalContact(string name, string phone, string email, string note, bool isFavorite = false)
+            : base(name, phone, email, isFavorite)
         {
-            this.note = note.Trim();
+            this.note = note != null ? note.Trim() : "";
         }
 
-        public override string Type
-        {
-            get { return "Личный"; }
-        }
+        public override string Type => "Личный";
 
-        // Дополнительные данные: заметка
         public override string Details
         {
-            get { return note; }
-            set { note = value.Trim(); }
+            get => note;
+            set => note = value != null ? value.Trim() : "";
         }
 
         public override string GetInfo()
@@ -71,27 +108,22 @@ namespace Contacts
         }
     }
 
-    // Рабочий контакт (наследник)
     public class WorkContact : Contact
     {
         string company;
 
-        public WorkContact(string name, string phone, string email, string company)
-            : base(name, phone, email)
+        public WorkContact(string name, string phone, string email, string company, bool isFavorite = false)
+            : base(name, phone, email, isFavorite)
         {
-            this.company = company.Trim();
+            this.company = company != null ? company.Trim() : "";
         }
 
-        public override string Type
-        {
-            get { return "Рабочий"; }
-        }
+        public override string Type => "Рабочий";
 
-        // Дополнительные данные: компания
         public override string Details
         {
-            get { return company; }
-            set { company = value.Trim(); }
+            get => company;
+            set => company = value != null ? value.Trim() : "";
         }
 
         public override string GetInfo()

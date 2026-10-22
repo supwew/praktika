@@ -1,13 +1,12 @@
 ﻿<Window x:Class="Contacts.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Контакты" Height="620" Width="760"
-        MinWidth="740" MinHeight="600"
+        Title="Контакты" Height="650" Width="760"
+        MinWidth="740" MinHeight="620"
         Background="#F4F5F7"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <!-- Стили для TextBox -->
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="4,3"/>
             <Setter Property="Width" Value="300"/>
@@ -39,7 +38,6 @@
             </Setter>
         </Style>
 
-        <!-- Стили для ComboBox -->
         <Style TargetType="ComboBox">
             <Setter Property="Margin" Value="4,3"/>
             <Setter Property="Width" Value="300"/>
@@ -47,7 +45,6 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
-        <!-- Базовый стиль кнопок -->
         <Style TargetType="Button">
             <Setter Property="Margin" Value="4,6,4,2"/>
             <Setter Property="Width" Value="115"/>
@@ -57,7 +54,6 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
-        <!-- Текст для меток полей -->
         <Style TargetType="TextBlock" x:Key="FieldLabel">
             <Setter Property="Width" Value="110"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -73,22 +69,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Поиск по имени (Шапка) -->
+        <!-- Поиск -->
         <Border Grid.Row="0" Background="White" CornerRadius="8" Padding="10" Margin="0,0,0,10">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.05" Color="Black"/>
-            </Border.Effect>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="🔍 Поиск по имени" VerticalAlignment="Center" Margin="0,0,12,0" FontWeight="SemiBold" Foreground="#4B5563"/>
                 <TextBox x:Name="searchBox" TextChanged="Search_TextChanged" Width="400"/>
             </StackPanel>
         </Border>
 
-        <!-- Таблица контактов (Центр) -->
+        <!-- Таблица -->
         <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="4" Margin="0,0,0,10">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.05" Color="Black"/>
-            </Border.Effect>
             <DataGrid x:Name="grid" 
                       AutoGenerateColumns="False" 
                       IsReadOnly="True"
@@ -101,6 +91,26 @@
                       GridLinesVisibility="Horizontal"
                       HorizontalGridLinesBrush="#F3F4F6">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="⭐" Width="40">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <!-- По умолчанию пусто -->
+                                            <Setter Property="Text" Value=""/>
+                                            <Style.Triggers>
+                                                <!-- Если IsFavorite == True, показываем звёздочку -->
+                                                <DataTrigger Binding="{Binding IsFavorite}" Value="True">
+                                                    <Setter Property="Text" Value="⭐"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="1.5*"/>
                     <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="*"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="1.5*"/>
@@ -110,11 +120,8 @@
             </DataGrid>
         </Border>
 
-        <!-- Поля ввода, кнопки и информация (Низ) -->
+        <!-- Форма ввода -->
         <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="12">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.05" Color="Black"/>
-            </Border.Effect>
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Тип" Style="{StaticResource FieldLabel}"/>
@@ -140,9 +147,13 @@
                     <TextBox x:Name="detailsBox"/>
                 </StackPanel>
 
+                <!-- Чекбокс Избранное -->
+                <StackPanel Orientation="Horizontal" Margin="114,6,0,6">
+                    <CheckBox x:Name="favoriteCheck" Content="Добавить в избранное ⭐" VerticalAlignment="Center"/>
+                </StackPanel>
+
                 <!-- Панель кнопок управления -->
                 <StackPanel Orientation="Horizontal" Margin="110,4,0,0">
-                    <!-- Добавить (изумрудная) -->
                     <Button Content="Добавить" Click="Add_Click" Background="#0D9488">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -161,7 +172,6 @@
                         </Button.Template>
                     </Button>
 
-                    <!-- Изменить (синяя) -->
                     <Button Content="Изменить" Click="Update_Click" Background="#2563EB">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -180,7 +190,6 @@
                         </Button.Template>
                     </Button>
 
-                    <!-- Удалить (темно-серая) -->
                     <Button Content="Удалить" Click="Delete_Click" Background="#4B5563">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
